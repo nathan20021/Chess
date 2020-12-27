@@ -8,12 +8,12 @@ class abstractPieces{
   boolean isChecked;
   boolean firstMove;
   boolean castleable;
-  boolean[] isPinned;
   ArrayList<PVector> moveables = new ArrayList<PVector>();
+  abstractPieces pinnedBy;
   PVector guardSquare;
   int dir;
   
-  public abstractPieces(PVector _coor, boolean _side, String _name, ArrayList<PVector> _moveables, boolean _isGuard, boolean _isChecked, boolean _isChose, PVector _guardSquare, boolean _firstMove, boolean _castleable, int _dir, boolean[] _isPinned){
+  public abstractPieces(PVector _coor, boolean _side, String _name, ArrayList<PVector> _moveables, boolean _isGuard, boolean _isChecked, boolean _isChose, PVector _guardSquare, boolean _firstMove, boolean _castleable, int _dir, abstractPieces _pinnedBy){
     this.coor = _coor;
     this.side = _side;
     _name.toLowerCase();
@@ -29,7 +29,7 @@ class abstractPieces{
     this.firstMove = _firstMove;
     this.castleable = _castleable;
     this.dir = _dir;
-    this.isPinned = _isPinned;
+    this.pinnedBy = _pinnedBy;
   }
   
 }
