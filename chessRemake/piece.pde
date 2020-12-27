@@ -4,6 +4,7 @@ class piece{
   PVector real_coor = new PVector();
   PVector origin;
   abstractPieces important;
+  abstractPieces pinnedBy;
   ArrayList<PVector> moveables = new ArrayList<PVector>();
   ArrayList<abstractPieces> abstractBoard = new ArrayList<abstractPieces>();
   ArrayList<abstractPieces> allies = new ArrayList<abstractPieces>();
@@ -22,8 +23,6 @@ class piece{
   float scale = 70* 85/100;
   boolean king_side = false;
   boolean queen_side = false;
-                        //ver   hor  diagUD  diagDU
-  boolean[] isPinned = {false, false, false, false};
   int POV = 1;
   int dir = 0;
   
@@ -48,7 +47,7 @@ class piece{
     }else{
      this.dir = 1; 
     }
-    important = new abstractPieces(this.coor, this.side, this.name, this.moveables, this.isGuard, this.isChecked, this.ischose, this.guardSquare, this.firstMove, this.castleable, this.dir, this.isPinned);
+    important = new abstractPieces(this.coor, this.side, this.name, this.moveables, this.isGuard, this.isChecked, this.ischose, this.guardSquare, this.firstMove, this.castleable, this.dir, this.pinnedBy);
   }
   
   public void calc(){
@@ -122,8 +121,53 @@ class piece{
     }      
   }
   
-  public void checkIfPinned(ArrayList<piece> all){
-    
+  public void checkIfPinned(){
+    for(abstractPieces _enemy : this.enemies){
+      if(_enemy.name == 'q'|_enemy.name == 'r'|_enemy.name == 'b'){
+        for(PVector _moveable: _enemy.moveables){
+          if(_moveable.x == this.coor.x && _moveable.y == this.coor.y){
+           
+            // find its king location:
+            PVector king_coor = new PVector(-1,-1);
+            for(abstractPieces _ally :this.allies){
+              if(_ally.name =='k'){
+                king_coor.x = _ally.coor.x;
+                king_coor.y = _ally.coor.y;
+              }
+            }
+            // Check if there are any pieces between the king and that piece
+            // rook First:
+            
+            // First check if the piece, rook and the king is co-linear
+            if(_enemy.name == 'r'){
+              boolean coLinear = false;
+              outer: for(int i = 0; i <2; i++){
+               switch(i){
+                 case 0:
+                 // Check in x direction
+                 if(_enemy.coor.x == this.coor.x && this.coor.x == king_coor.x){
+                   coLinear = true;
+                   break outer;
+                 }
+                 break;
+                 case 1:
+                 // Check in y direction
+                 if(_enemy.coor.y == this.coor.y && this.coor.y == king_coor.y){
+                   coLinear = true;
+                   break outer;
+                 }
+                 break;
+                 
+               }
+              }
+            }
+            
+            
+            
+          }
+        }
+      }
+    }
   }
   
   public void initAbstractBoard(ArrayList<piece> _all){
